@@ -79,7 +79,7 @@ $(function(){
     		},
     		password:{
     			required:true,
-    			minlength:6
+    			minlength:8
     		},
     		againPassword:{
     			required:true,
@@ -103,7 +103,7 @@ $(function(){
     		},
     		password:{
     			required:"登录密码不能为空",
-    			minlength:"密码至少为6位"
+    			minlength:"密码至少为8位"
     		},
     		againPassword:{
     			required:"确认密码不能为空",
