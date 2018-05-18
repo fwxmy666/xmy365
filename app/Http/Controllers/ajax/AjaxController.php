@@ -33,7 +33,7 @@ class AjaxController extends Controller
     }
 
 
-    //前台用户
+    //前台用户添加
     public function qajax(Request $request)
     {
         $name = $request->input('username');
@@ -54,8 +54,27 @@ class AjaxController extends Controller
 
 
 
+    //前台用户注册
+    public function zajax(Request $request)
+    {
+        $name = $request->input('username');
 
-    //商品上下架
+
+        $res = HomeUsers::where('username',$name)->first();
+
+
+        if($res){
+
+            echo 1;
+        } else {
+
+            echo 0;
+        }
+        
+    }
+
+
+    //后台的商品上下架
     public function status(Request $request)
     {
 
@@ -85,6 +104,35 @@ class AjaxController extends Controller
             echo 'lose';
         }
 
+    }
+
+
+
+
+    //前台用户忘记密码  手机验证
+    public function wajax(Request $request)
+    {
+        
+        $name = $request->input('username');
+        $phone = $request->input('phone');
+
+
+        $res = HomeUsers::where('username',$name)->first();
+
+
+        if($res){
+
+            if($res['phone'] == $phone){
+                echo 1;
+            } else {
+                echo 0;
+            }
+
+        } else {
+
+            echo 0;
+        }
+        
     }
 
 

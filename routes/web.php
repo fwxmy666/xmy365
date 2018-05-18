@@ -78,6 +78,7 @@ Route::group(['middleware'=>'adminlogin'],function(){
 
 //后台登录
 Route::get('admin/login','login\LoginController@login');
+//后台登录的验证过程
 Route::post('admin/dologin','login\LoginController@dologin');
 //后台退出
 Route::get('admin/signout','login\LoginController@signout');
@@ -89,11 +90,67 @@ Route::get('admin/signout','login\LoginController@signout');
 
 //前台注册
 Route::get('home/register','login\HomeLoginController@register');
+//前台注册验证
+Route::post('home/check','login\HomeLoginController@check');           // 111
+//前台注册ajax
+Route::get('home/zajax','ajax\AjaxController@zajax');                  // 222
+//前台手机验证码发送
+Route::post('home/yzm','login\HomeLoginController@yzm');               // 333
+//前台注册完成页面
+Route::get('home/success','login\HomeLoginController@success');        // 444
+//前台登录的图片验证码
+Route::get('home/captcha','login\HomeLoginController@captcha');        // 555
+
+
+
 //前台登录
 Route::get('home/login','login\HomeLoginController@login');
+
+//前台登录验证
+Route::post('home/dologin','login\HomeLoginController@dologin');       // 666
+
+//前台退出
+Route::get('home/signout','login\HomeLoginController@signout');        // 777
+
+//前台忘记密码
+Route::get('home/forget','login\HomeLoginController@forget');          // 888
+
+//前台忘记密码提交申请
+Route::post('home/doforget','login\HomeLoginController@doforget');      // ccc
+
+//前台用户重置密码页面
+Route::get('home/forgetpass','login\HomeLoginController@forgetpass');  // 999
+
+//前台忘记密码ajax
+Route::get('home/wajax','ajax\AjaxController@wajax');                  // aaa
+//前台申请密码页面
+Route::get('home/appealpass','login\HomeLoginController@appealpass');  // bbb
+//前台设置新密码提交申请
+Route::post('home/updatepass/{id}','login\HomeLoginController@updatepass');  // ddd
+//前台设置新密码成功页面
+Route::get('home/successpass','login\HomeLoginController@successpass');  // eee
+
+
 
 //前台首页
 Route::get('/','home\IndexController@index');
 
 //前台列表页
 Route::get('home/list','home\IndexController@list');
+
+
+
+
+
+
+
+
+
+
+//前台控制
+Route::group([],function(){
+
+	Route::get('message/add','');
+
+});
+

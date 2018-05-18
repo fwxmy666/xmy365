@@ -59,8 +59,6 @@
 <div class="wrap-roof">
    <div class="roof">
        <div class="left">
-     
-       		
 	           <span>您好，欢迎来到香满圆</span>
 	           <ul class="login">
 	               <a href="/home/login" style="color: gray; float: left;"><li>登录</li></a>

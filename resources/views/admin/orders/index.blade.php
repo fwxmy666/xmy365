@@ -84,7 +84,7 @@
                     <td class="uname" align="center">{{$v->oname}}</td>
                     <td class="uname" align="center">{{$v->address}}</td>
                     <td class="uname" align="center">{{$v->cnt}}</td>
-                    <td class="uname" align="center">{{$v->price}}</td>
+                    <td class="uname" align="center">{{$v->sum}}</td>
                     <td class="uname" align="center">{{date('Y-m-d H:i:s',$v->addtime)}}</td>
                     <td class=" " align="center">
                     	@if($v->status == 0)
