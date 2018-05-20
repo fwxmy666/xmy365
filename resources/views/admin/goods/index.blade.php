@@ -17,7 +17,8 @@
 
         	<form action="/admin/goods" method='get'>
         	<div id="DataTables_Table_1_length" class="dataTables_length">
-        		<label>显示
+        		<label>
+        			显示
         			
 	        		<select name="num" size="1" aria-controls="DataTables_Table_1">
 
@@ -26,15 +27,11 @@
 	        			selected="selected"
 						@endif
 	        			>5</option>
-
-
-
 	        			<option value="10"
 						@if($num == 10) 
 	        			selected="selected"
 						@endif
 	        			>10</option>
-
 
 	        			<option value="20"
 						@if($num == 20) 
@@ -44,6 +41,16 @@
 	        			>20</option>
 	        			
 	        		</select> 条数据
+	        		<a href="/admin/goods/create" class="btn">
+
+			        		<i class="icol-add">
+
+			        		</i>
+		        		<font style="vertical-align: inherit;">
+		        			<font style="vertical-align: inherit;">添加商品</font>
+		        		</font>
+	        		</a>
+
         		</label>
         	</div>
 
@@ -55,28 +62,55 @@
     			<button class='btn btn-info'>搜索</button>
     		</div>
 
-
-
     		</form>
 
         <table class="mws-datatable-fn mws-table dataTable" id="DataTables_Table_1" aria-describedby="DataTables_Table_1_info">
             <thead>
-                <tr role="row">
-                	<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 10px;" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">ID</th>
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 100px;" aria-label="Browser: activate to sort column ascending">商品名称</th>
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 150px;" aria-label="Platform(s): activate to sort column ascending">商家</th>
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 400px;" aria-label="Platform(s): activate to sort column ascending">商品描述</th>
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 50px;" aria-label="Engine version: activate to sort column ascending">定价</th>
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending"  style="width: 100px;">商品图片</th>
-                	
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">库存</th>
-                	<!-- <th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 100px;" aria-label="Engine version: activate to sort column ascending">商品详情</th> -->
-                	
-               
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 50px;" aria-label="Engine version: activate to sort column ascending">状态</th>
-                	
-                	<th class="" role="columnheader" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" style="width: 400px;" aria-label="CSS grade: activate to sort column ascending">操作</th>
-                </tr>
+                <tr>
+                                	
+                                    <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">ID</font>
+	                                    </font>
+                                    </th>
+                                     <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">名称</font>
+	                                    </font>
+                                    </th>
+                                     <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">简介</font>
+	                                    </font>
+                                    </th>
+                                     <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">价格</font>
+	                                    </font>
+                                    </th>
+                                    <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font >图片</font>
+	                                    </font>
+                                    </th>
+                                     
+                                     <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">库存</font>
+	                                    </font>
+                                    </th>
+                                     <th>
+	                                    <font style="vertical-align: inherit;">
+
+	                                    		<font style="vertical-align: inherit;">状态</font>
+	                                    </font>
+                                    </th>
+                                    <th>
+	                                    <font style="vertical-align: inherit;">
+	                                    		<font style="vertical-align: inherit;">操作</font>
+	                                    </font>
+                                    </th>                    
+                                </tr>
             </thead>
             
         <tbody role="alert" aria-live="polite" aria-relevant="all">
@@ -91,21 +125,78 @@
 					@endif 
 
         		" >
-                    <td class="">{{$v->id}}</td>
-                    <td class="">{{$v->brand}}</td>
-                    <td class="">{{$v->company}}</td>
-                    <td class="" ">{{$v->text}}</td>
-                    <td class="">{{$v->price}}</td>
-                    <td  style="width: 150px; height: 150px;">{!!$v->content!!}</td>
-                    <td class="" ">{{$v->stock}}</td>
-                    <td class="">
-                    @if ($v->status == 1)
-                    上架
-                    @else
-                    下架
-                    @endif
-                    </td>
-                    <td class="status" style="width: 260px; height: 100px;" align="center">
+                   
+                   			<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{$v->id}}</font>
+                                </font>
+                            </td>
+
+
+                        	<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{$v->gname}}</font>
+                                </font>
+                            </td>
+
+
+                        	<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{$v->info}}</font>
+                                </font>
+                            </td>
+
+
+                        	<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{$v->price}}</font>
+                                </font>
+                            </td>
+
+
+                        	<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+									<div>
+										 
+	                                    <img  style="width: 130px; height:97px;" src="{{$v->img}}">
+
+
+											<div>
+												@foreach($v->gimgs as $val)
+	                                   			<img style="width: 20px; height: 18px" src="{{$val->gimgs}}">
+	                                    		@endforeach
+											</div>
+
+									</div>
+                                   
+                                   
+                                   
+
+                                    </font>
+                                </font>
+                            </td>
+
+
+                        	<td>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{$v->stock}}</font>
+                                </font>
+                            </td>
+                            <td>
+
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+		                                @if ($v->status == 1)
+					                    上架
+					                    @else
+					                    下架
+					                    @endif
+			                    	</font>
+                                </font>
+                            </td>
+
+                   <td class="status" style="width: 260px; height: 100px;" align="center">
 	 					@if ($v->status != 1)
 	 					<button class='btn btn-primary ajax' value="0" name="status">上架</button>
 	 					@else
@@ -181,19 +272,8 @@
 				</style>
 
 <div class="dataTables_paginate paging_full_numbers" id="DataTables_Table_1_paginate">
-				
-			
 
-
-				<!-- 第一种方式 -->
 				{{ $res->appends(['num' => $num,'search'=>$search])->links() }} 
-
-				<!-- 第二种方式 -->
-				
-
-
-
-
                </div>
     </div>
 </div>

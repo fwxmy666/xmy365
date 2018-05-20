@@ -58,17 +58,34 @@
 
 <div class="wrap-roof">
    <div class="roof">
+<?php 
+	
+	$users = DB::table('homeusers')->where('uid',session('homeuid'))->first();
+	
+?>
+ 
+
+<div class="wrap-roof">
+   <div class="roof">
        <div class="left">
-	           <span>您好，欢迎来到香满圆</span>
+  
 	           <ul class="login">
+				   @if($users)
+				   <li>您好 <a href=""><strong>{{$users->username}}</strong></a>，欢迎来到香满圆</li>
+	               <li><a href="/home/signout" style="color: gray;">退出登录</a></li>
+				   @else
+				   <span>您好，欢迎来到香满圆</span>
 	               <a href="/home/login" style="color: gray; float: left;"><li>登录</li></a>
 	               <a href="/home/register" style="color: gray;float: left;"><li>注册</li></a>
-	                
+	               @endif
 	               <div style="clear: both;"></div>
 	            </ul>
             
             
         </div>
+       
+    </div>
+</div>
         <div class="right">
             <ul class="right-list clearfix">
                 <li class="net-all"><i class="iconfont">&#xe600;</i>网站导航

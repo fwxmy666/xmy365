@@ -31,6 +31,28 @@ use Illuminate\Http\Request;
 	}
 
 	
+     function getzileisub(&$arr,$cid=0)
+    {  
+    
+  	  	$cates = DB::table('category')->get();
+
+
+        foreach ($cates as $k=>$v){
+           if($v->pid==$cid){
+
+
+            $arr[] = $v->tid;
+
+
+        	getzileisub($arr,$v->tid);
+
+
+           }
+        }
+        return $arr;
+
+
+    }
 
 
 

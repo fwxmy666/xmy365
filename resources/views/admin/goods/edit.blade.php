@@ -29,45 +29,40 @@
     			<div class="mws-form-row">
     				<label class="mws-form-label">商品名称</label>
     				<div class="mws-form-item">
-    					<input type="text" name='brand' class="small" value='{{$info->brand}}'>
+    					<input type="text" name='gname' class="small" value='{{$info->gname}}'>
     				</div>
     			</div>
+                <div class="mws-form-row">
+                    <label class="mws-form-label">商品简介</label>
+                    <div class="mws-form-item">
+                        <textarea name="info" id="" cols="30" value="" rows="10">{{$info->info}}</textarea>
+                    </div>
+                </div>
 
     			<div class="mws-form-row">
-    				<label class="mws-form-label">定价</label>
+    				<label class="mws-form-label">商品定价</label>
     				<div class="mws-form-item">
     					<input type="text" name='price' class="small" value='{{$info->price}}'>
     				</div>
     			</div>
-    			<div class="mws-form-row">
-                    <label class="mws-form-label">商品图片</label>
+    			 <div class="mws-form-row">
+                    <label class="mws-form-label">商品封面图片</label>
                     <div class="mws-form-item">
-                    	 <div style="width:150px;  background-color:#666; z-index:1">
-
-                        {!!$info->content!!}
-					</div>
-
-
-                   <input type="file" name='content' multiple readonly="readonly" style="width: 150px height:150px; padding-right: 85px;" class="fileinput-preview" placeholder="No file selected...">
+                        <img style="width: 100px; height: 50px;" src="{{$info->img}}">
+                        <input type="file" name='img' multiple readonly="readonly" style="width: 100%; padding-right: 85px;" class="fileinput-preview" placeholder="No file selected...">
                         
                     </div>
-                       
                 </div>
               
                 
 
     			<div class="mws-form-row">
-    				<label class="mws-form-label">库存</label>
+    				<label class="mws-form-label">商品库存</label>
     				<div class="mws-form-item">
     					<input type="text" name='stock' class="small" value='{{$info->stock}}'>
     				</div>
     			</div>
-    			<div class="mws-form-row">
-                    <label class="mws-form-label">商品详情</label>
-                    <div class="mws-form-item">
-                        <textarea name="text" id="" cols="30" value="" rows="10">{{$info->text}}</textarea>
-                    </div>
-                </div>
+    			
     			
 
 
