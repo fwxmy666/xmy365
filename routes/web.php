@@ -62,16 +62,42 @@ Route::group(['middleware'=>'adminlogin'],function(){
 
 
 
+//*****ZhuZhaoChuan******
 
-	//分类管理
+	// 后台分类管理
 	Route::resource('admin/category', 'Admin\goods\CategoryController');
-	//商品管理
+
+	//后台商品管理
 	Route::resource('admin/goods', 'Admin\goods\GoodsController');
-	//商品上下架ajax验证
+
+	//后台商品上下架ajax验证
 	Route::get('home/status','ajax\AjaxController@status');
 	
-	
 });
+//*****ZhuZhaoChuan******
+//
+//
+	//前台首页
+	Route::get('/','home\IndexController@index');
+
+	//前台商品详情
+	Route::get('home/goods/{id}', 'home\goods\GoodsController@index');
+
+	//前台列表页
+	Route::get('home/list/{id}', 'home\goods\GoodsListController@index');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -132,11 +158,6 @@ Route::get('home/successpass','login\HomeLoginController@successpass');  // eee
 
 
 
-//前台首页
-Route::get('/','home\IndexController@index');
-
-//前台列表页
-Route::get('home/list','home\IndexController@list');
 
 
 
@@ -150,7 +171,7 @@ Route::get('home/list','home\IndexController@list');
 //前台控制
 Route::group([],function(){
 
-	Route::get('message/add','');
+	// Route::get('message/add','');
 
 });
 

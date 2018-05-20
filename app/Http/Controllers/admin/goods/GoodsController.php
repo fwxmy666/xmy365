@@ -18,22 +18,32 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
+
+       
         $res = Goods::select()->
-        orderBy('id')->
-        where('brand','like','%'.$request->input('search').'%')->
+        orderBy('id','desc')->
+        where('gname','like','%'.$request->input('search').'%')->
         paginate($request->input('num',5));
 
+       
         $num = $request->input('num');
         
         $search = $request->input('search');
 
+        //显示小图
+        foreach ($res as $k => $v) {
+
+            $v->gimgs = DB::table('gimgs')->where('gid',$v->id)->get();
+
+        }
+
+      
         return view('admin.goods.index',[
             'title'=>'查看商品',
             'num'=>$num,
             'search'=>$search,
             'request'=>$request,
-            'res'=>$res,
-            
+            'res'=>$res
            
         ]);
 
@@ -46,14 +56,20 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        $res = Category::select(DB::raw('*,concat(path,tid) as paths'))->
+
+        //查询分类
+        // $data = \DB::select("select category.*,concat(path,tid) p from category order by p");
+
+        $data = Category::select(DB::raw('*,concat(path,tid) as paths'))->
         orderBy('paths')->
         get();
 
-        //调用封装
-        type($res);
+        //调用树形结构封装
+        type($data);
+
+
         
-        return view('admin.goods.add', ['title'=>'商品添加', 'res'=>$res]);
+        return view('admin.goods.add', ['title'=>'商品添加', 'data'=>$data]);
     }
 
     /**
@@ -67,35 +83,64 @@ class GoodsController extends Controller
 
         $this->validate($request, [
 
-            'brand' => 'required',
-            'price' => 'required|regex:/^\d{1,10}$/',
-            'company' => 'required',
-            'stock' => 'required',
-            'content' => 'required'
+            'gname' => 'required',
+            'info' => 'required',
+            'stock' => 'required|regex:/^\d+$/',
+            'price' => 'required|regex:/^\d+$/',
+            'img' => 'required',
+            'gimg' => 'required',
+            'gimgs' => 'required',
+
            
         ],[
-            'brand.required' => "商品名称不能为空",
-            'price.required' => "定价不能为空",
-            'price.regex' => "定价请使用数字格式不超过10位",
-            'company.required' => "生产厂家不能为空",
-            'stock.required' => "库存不能为空",
-            'content.required' => "详情不能为空"
+            'gname.required' => "商品名称不能为空",         
+            'stock.required' => "商品库存不能为空",
+            'stock.regex' => "商品库存只能是纯数字",
+            'img.required' => "商品封面图片不能为空",
+            'price.required' => "商品价格不能为空",
+            'price.regex' => "商品价格只能是纯数字",
+            'gimg.required' => "商品详情图片不能为空",
+            'gimgs.required' => "商品多图片不能为空",
+            'info.required' => "商品简介不能为空",
 
 
         ]);
 
-        $res = $request->except('_token','gimg');
 
+        $res = $request->except('_token','gimg','img','gimgs');
+
+        //处理封面图片
+        if ($request->hasFile('img')) {
+
+            $gimg = $request->file('img');
+
+            foreach($gimg as $k => $v) {
+              
+                //随机名
+                $name = rand(1111,9999).time();
+                //获取后缀
+                $suffix = $v->getClientOriginalExtension();
+                //移动
+                $v->move('./AdminGoods/img/',$name.'.'.$suffix);
+               
+
+                $res['img'] = '/AdminGoods/img/'.$name.'.'.$suffix;
+             
+             
+            }
+
+        }
+        //获取插入后的值
         $gid = Goods::insertGetId($res);
 
-        //处理图片
+      //处理详情图片
         if ($request->hasFile('gimg')) {
 
             $gimg = $request->file('gimg');
 
             $imgs= [];
             //循环四次
-            foreach($gimg as $k => $v){
+            foreach($gimg as $k => $v) {
                 //一维数组
                 $gm = [];
                 //随机名
@@ -103,11 +148,11 @@ class GoodsController extends Controller
                 //获取后缀
                 $suffix = $v->getClientOriginalExtension();
                 //移动
-                $v->move('./AdminGoods',$name.'.'.$suffix);
+                $v->move('./AdminGoods/gimg/',$name.'.'.$suffix);
                 //放进一维数组
                 $gm['gid'] = $gid;
 
-                $gm['gimgs'] = '/AdminGoods/'.$name.'.'.$suffix;
+                $gm['gimg'] = '/AdminGoods/gimg/'.$name.'.'.$suffix;
                 //二维数组
                 $imgs[] = $gm;
 
@@ -115,7 +160,39 @@ class GoodsController extends Controller
 
         }
 
-        //插入二维数组
+
+
+        //插入二维数组 图片
+        $data = DB::table('gimg')->insert($imgs);
+
+        //处理多图片
+        if ($request->hasFile('gimgs')) {
+
+            $gimg = $request->file('gimgs');
+
+            $imgs= [];
+            //循环四次
+            foreach($gimg as $k => $v) {
+                //一维数组
+                $gm = [];
+                //随机名
+                $name = rand(1111,9999).time();
+                //获取后缀
+                $suffix = $v->getClientOriginalExtension();
+                //移动
+                $v->move('./AdminGoods/gimgs/',$name.'.'.$suffix);
+                //放进一维数组
+                $gm['gid'] = $gid;
+
+                $gm['gimgs'] = '/AdminGoods/gimgs/'.$name.'.'.$suffix;
+                //二维数组
+                $imgs[] = $gm;
+
+            }
+
+        }
+
+        //插入二维数组 多图片
         $data = DB::table('gimgs')->insert($imgs);
 
         if ($data) {
@@ -164,46 +241,36 @@ class GoodsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
 
-            'content' => 'required'
-           
-        ],[
-
-            'content.required' => "图片不能为空"
-
-        ]);
-
-      $res = Goods::where('id',$id)->first();
+      $res = DB::table('goods')->where('id',$id)->first();
+      
 
         if(!$res)
         {
             return back();
         }
 
-        // //删除
-        // $data = '@'.unlink('.'.$res->content);
-
-        if($request->hasFile('content')) {
+        if($request->hasFile('img')){
 
             //文件名
             $name = rand(1111,9999).'_'.time();
 
             //获取后缀
-            $suffix = $request->file('content')->getClientOriginalExtension(); 
+            $suffix = $request->file('img')->getClientOriginalExtension(); 
 
             //移动到哪去
-            $path = $request->file('content')->move('./admin/goodcontent/images/', $name.'.'.$suffix);
-           
+            $path = $request->file('img')->move('./AdminGoods/img/', $name.'.'.$suffix);
+
+
         }
-       
+
         $res = $request->except('_token','_method');
 
-        
-        $res['content'] = "<p><img src='/admin/goodcontent/images/$name.$suffix' title='$name.$suffix' alt='$name.$suffix'/></p>";
+        // dd($res);
+        //存到数据表中
+        $res['img'] = '/AdminGoods/img/'.$name.'.'.$suffix;
 
-
-        $data = Goods::where('id',$id)->update($res);
+         $data = DB::table('goods')->where('id',$id)->update($res);
 
         if ($data) {
 
@@ -228,30 +295,38 @@ class GoodsController extends Controller
         $res = DB::table('gimgs')->where('gid',$id)->delete();
 
         if ($res) {
-            foreach($req as $k=>$v){
+
+            foreach ($req as $k=>$v) {
 
                 unlink('.'.$v->gimgs);
             
             }
 
         }
-        
+
+        $req1 = DB::table('gimg')->where('gid',$id)->get();
+       
+        $res1 = DB::table('gimg')->where('gid',$id)->delete();
+
+        if ($res1) {
+            
+            foreach ($req1 as $k=>$v) {
+
+                unlink('.'.$v->gimg);
+            
+            }
+
+        }
+
+ 
         //查询要删除的id数据
         $req = DB::table('goods')->where('id',$id)->first();
-        //删除商品图片路径
-        $req = $req->content;
+     
+        $file = $req->img;
+              
+        $res = DB::table('goods')->where('id',$id)->delete();
 
-        //正则匹配
-        $ptn = '/\/.*?\.(jpg|jpeg|png|gif)/';
-
-          // 执行匹配
-        preg_match($ptn, $req, $arr);
-
-        $file = $arr[0];
-
-        $req = Goods::where('id',$id)->delete();
-
-        if ($req) {
+        if ($res) {
 
             //删除本地商品图片
             unlink('.'.$file);
@@ -262,7 +337,9 @@ class GoodsController extends Controller
 
             return back()->with('warning', '操作失败');
         }
-         
-    }
+          
+
+
     
+    }
 }
